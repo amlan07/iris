@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from sklearn import datasets
+import pickle
 from sklearn.ensemble import RandomForestClassifier
 
 st.write("""
@@ -9,6 +10,7 @@ This app predicts the **Iris flower** type!
 """)
 
 st.sidebar.header('User Input Parameters')
+iris = datasets.load_iris()
 
 def user_input_features():
     sepal_length = st.sidebar.slider('Sepal length', 4.3, 7.9, 5.4)
@@ -27,12 +29,8 @@ df = user_input_features()
 st.subheader('User Input parameters')
 st.write(df)
 
-iris = datasets.load_iris()
-X = iris.data
-Y = iris.target
+clf = pickle.load(open('iris_clf.pkl', 'rb'))
 
-clf = RandomForestClassifier()
-clf.fit(X, Y)
 
 prediction = clf.predict(df)
 prediction_proba = clf.predict_proba(df)
